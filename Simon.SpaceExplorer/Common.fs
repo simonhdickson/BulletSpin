@@ -94,7 +94,7 @@ type Projectile = {
 type FireMode =
     | MultipleFire of float Set
 
-type EnemyFireState = { delay:float; nextShotDegrees:float; fireMode:FireMode }
+type EnemyFireState = { stateChange:DateTime; delay:float; nextShotDegrees:float; fireMode:FireMode }
 
 type Enemy = { 
     location : Vector2
@@ -137,7 +137,18 @@ type RenderingContext = {
     surface:SDLSurface.Surface
     mutable lastFrameTick : uint32 }
 
-let defaultLevel () =
+let fireStates = 
+    [{ delay = 0.15; nextShotDegrees= 15.; fireMode = MultipleFire (Set.ofArray [|0.; 180.|]); stateChange = DateTime.UtcNow.AddSeconds 5. }
+     { delay = 0.15; nextShotDegrees= 15.; fireMode = MultipleFire (Set.ofArray [|0.; 120.; 240.|]); stateChange = DateTime.UtcNow.AddSeconds 5. }
+     { delay = 0.15; nextShotDegrees= 15.; fireMode = MultipleFire (Set.ofArray [|0.; 90.; 180.; 270.|]); stateChange = DateTime.UtcNow.AddSeconds 5. }
+     { delay = 0.15; nextShotDegrees= 15.; fireMode = MultipleFire (Set.ofArray [|-10.; 10.|]); stateChange = DateTime.UtcNow.AddSeconds 5. }
+     { delay = 0.8; nextShotDegrees= 15.; fireMode = MultipleFire (Set.ofArray [|0. .. 20. .. 360.|]); stateChange = DateTime.UtcNow.AddSeconds 5. }]
+
+module List =
+    let random (random:Random) (list:_ list) =
+        list.[random.Next(0, List.length list)]
+
+let defaultLevel chaos =
     let player = { 
         location = { X = 0.; Y = 0.}
         moveDirection = None, None
@@ -147,7 +158,7 @@ let defaultLevel () =
         location = { X = float screenWidth / 2.; Y = float screenHeight / 2. }
         fireDirection = { X = 10.; Y = 0. }
         nextFireTime = DateTime.MinValue
-        fireState = { delay = 0.35; nextShotDegrees= 30.; fireMode = MultipleFire (Set.ofArray [|0.; 180.|]) } }
+        fireState = List.random chaos fireStates }
     Level {
         player = player
         projectiles = Set.empty
@@ -174,12 +185,13 @@ module GameState =
             { gameState with screen = Level { level with projectiles = f projectiles} }
         | _ -> gameState
 
+    let chaos = Random(DateTime.Now.Millisecond)
     let empty = {
         treatsLookup = Set.empty
         pressedKeys = Set.empty
         sprites = Map.empty
         controllers = Set.empty, Set.empty
         turkeyAngle = 0.0
-        screen = defaultLevel ()
-        chaos = System.Random(System.DateTime.Now.Millisecond)
+        screen = defaultLevel chaos
+        chaos = chaos
         lastFrameTime = getTicks() }
