@@ -44,10 +44,37 @@ let updateProjectiles step (gameState:GameState) =
     gameState
     |> GameState.updateProjectiles (Set.map (fun p -> { p with location = applyMotion p step }))
 
+let cleanUpProjectiles (gameState:GameState) =
+    match gameState.screen with
+    | Level level ->
+        let projectiles =
+            level.projectiles
+            |> Set.filter (fun p -> p.location.X > -30. && p.location.Y > -30. && p.location.X < (double screenWidth) + 30. && p.location.Y < (double screenHeight) + 30.)
+        let level = { level with projectiles = projectiles }
+        { gameState with screen = Level level }
+    | _ -> gameState
+
+let handleCollisionDetection gameState =
+    match gameState.screen with
+    | Level { player = player; projectiles = projectiles } ->
+        let hit =
+            projectiles
+            |> Set.exists (fun projectile ->
+                let rectA = projectile.AsRect
+                let rectB = player.AsRect
+                rectA.Left < rectB.Right && rectA.Right > rectB.Left && rectA.Top < rectB.Bottom && rectA.Bottom > rectB.Top)
+        if hit then
+            { gameState with screen = GameOver }
+        else
+            gameState
+    | _ -> gameState
+
 let update (gameState:GameState) =
     let dt = getTicks() - gameState.lastFrameTime
     let step = min (float dt) (1. / 30.)
     gameState
     |> updatePlayer step
     |> updateProjectiles step
+    |> cleanUpProjectiles
+    |> handleCollisionDetection
     |> fireBullet

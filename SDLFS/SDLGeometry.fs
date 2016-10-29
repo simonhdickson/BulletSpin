@@ -37,7 +37,13 @@ module private SDLRectNative =
 
 type Point = {X: int<px>; Y: int<px>}
 
-type Rectangle = {X: int<px>; Y: int<px>; Width: int<px>; Height: int<px>}
+type Rectangle = {
+    X: int<px>; Y: int<px>; Width: int<px>; Height: int<px>}
+    with
+    member this.Left = this.X
+    member this.Top = this.Y
+    member this.Right = this.X + this.Width
+    member this.Bottom = this.Y + this.Height
 
 let internal rectangleToSDL_Rect (r:Rectangle) :SDL_Rect =
     let mutable result = new SDL_Rect()

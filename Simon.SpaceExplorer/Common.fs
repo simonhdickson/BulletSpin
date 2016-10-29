@@ -28,14 +28,9 @@ type Vector2 = {
     Y: double }
     with
     static member (+) (pointa , pointb) = 
-        {X = pointa.X + pointb.X ; Y= pointa.Y + pointb.Y}
+        { X = pointa.X + pointb.X ; Y= pointa.Y + pointb.Y }
     static member (*) (pointa , amount) = 
-        {X = pointa.X * amount ; Y= pointa.Y * amount }
-    member this.GridX = int(this.X / cellWidthf)
-    member this.GridY = int(this.Y / cellHeightf)
-    member this.CentreGridX = int <| (this.X + cellWidthf / 2.0) / cellWidthf
-    member this.CentreGridY = int <| (this.Y + cellHeightf /2.0) / cellHeightf
-    member this.Grid = this.GridX, this.GridY
+        { X = pointa.X * amount ; Y= pointa.Y * amount }
     member this.Rotate(degrees) =
         this.RotateRadians(degrees * (Math.PI / 180.))
     member this.RotateRadians(radians) =
@@ -96,10 +91,15 @@ type Projectile = {
             Width = w
             Height = h 
         }
+type FireMode =
+    | MultipleFire of float Set
+
+type EnemyFireState = { delay:float; nextShotDegrees:float; fireMode:FireMode }
 
 type Enemy = { 
     location : Vector2
     fireDirection : Vector2
+    fireState : EnemyFireState
     nextFireTime : DateTime }
     with
     member this.Size =
@@ -119,6 +119,7 @@ type Level = { player:Player; enemy:Enemy; projectiles:Projectile Set }
 type Screen =
     | Title
     | Level of level:Level
+    | GameOver
 
 type GameState = {
     treatsLookup : Set<int*int> 
@@ -142,10 +143,15 @@ let defaultLevel () =
         moveDirection = None, None
         fireDirection = None
         nextFireTime = DateTime.MinValue }
+    let enemy = {
+        location = { X = float screenWidth / 2.; Y = float screenHeight / 2. }
+        fireDirection = { X = 10.; Y = 0. }
+        nextFireTime = DateTime.MinValue
+        fireState = { delay = 0.35; nextShotDegrees= 30.; fireMode = MultipleFire (Set.ofArray [|0.; 180.|]) } }
     Level {
         player = player
         projectiles = Set.empty
-        enemy = { location = { X = float screenWidth / 2.; Y = float screenHeight / 2. }; fireDirection = { X = 10.; Y = 0. }; nextFireTime = DateTime.MinValue }
+        enemy = enemy
     }
 
 [<CompilationRepresentation (CompilationRepresentationFlags.ModuleSuffix)>]
