@@ -1,0 +1,6 @@
+source https://nuget.org/api/v2
+framework: <=net461
+
+nuget sdl2
+nuget SDL_image
+nuget xunit

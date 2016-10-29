@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{886C5800-290D-44A1-96B1-9AF2692DE856}"
+	ProjectSection(SolutionItems) = preProject
+		paket.dependencies = paket.dependencies
+		paket.lock = paket.lock
+	EndProjectSection
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Simon.SpaceExplorer", "Simon.SpaceExplorer\Simon.SpaceExplorer.fsproj", "{FD2A543E-4D09-4C55-B389-74B6DA8E81F5}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SDLFS", "SDLFS\SDLFS.fsproj", "{0325F0BE-A9DE-4C55-A501-85061D6DA4D6}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Simon.SpaceExplorer.Tests", "Simon.SpaceExplorer.Tests\Simon.SpaceExplorer.Tests.fsproj", "{B8677D14-0521-47FD-B43A-674E53D48C33}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FD2A543E-4D09-4C55-B389-74B6DA8E81F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD2A543E-4D09-4C55-B389-74B6DA8E81F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD2A543E-4D09-4C55-B389-74B6DA8E81F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD2A543E-4D09-4C55-B389-74B6DA8E81F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0325F0BE-A9DE-4C55-A501-85061D6DA4D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0325F0BE-A9DE-4C55-A501-85061D6DA4D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0325F0BE-A9DE-4C55-A501-85061D6DA4D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0325F0BE-A9DE-4C55-A501-85061D6DA4D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8677D14-0521-47FD-B43A-674E53D48C33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8677D14-0521-47FD-B43A-674E53D48C33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8677D14-0521-47FD-B43A-674E53D48C33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8677D14-0521-47FD-B43A-674E53D48C33}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
