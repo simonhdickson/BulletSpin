@@ -61,13 +61,13 @@ let render(context:RenderingContext) (state:GameState) =
     
     match state.screen with
     | Level level ->
+        level.projectiles
+        |> Set.iter (fun i -> context.renderer |> SDLRender.drawRect i.AsRect |> ignore)
         context.renderer |> SDLRender.setDrawColor (0uy, 255uy, 0uy, 255uy) |> ignore
         context.renderer |> SDLRender.drawRect level.player.AsRect |> ignore
         context.renderer |> SDLRender.setDrawColor (255uy, 0uy, 0uy, 255uy) |> ignore
         context.renderer |> SDLRender.drawRect level.enemy.AsRect |> ignore
         context.renderer |> SDLRender.setDrawColor (0uy, 0uy, 255uy, 255uy) |> ignore
-        level.projectiles
-        |> Set.iter (fun i -> context.renderer |> SDLRender.drawRect i.AsRect |> ignore)
     | _ -> ()
 
     context.renderer |> SDLRender.present
